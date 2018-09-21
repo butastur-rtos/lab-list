@@ -89,6 +89,8 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
     /* You need to fix up this code. */
     q->head = q->head->next;
+    /* remove one element, so the size should decrease */
+    q->size--;
     return true;
 }
 
