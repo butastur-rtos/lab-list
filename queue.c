@@ -62,10 +62,12 @@ bool q_insert_head(queue_t *q, char *s)
     newh = malloc(sizeof(list_ele_t));
     /* Don't forget to allocate space for the string and copy it */
     /* What if either call to malloc returns NULL? */
-    newh->next = q->head;
-    q->head = newh;
-    newh->value = strdup(s);
-    return true;
+    if (newh != NULL) {
+        newh->next = q->head;
+        q->head = newh;
+        newh->value = strdup(s);
+    }
+    return newh != NULL;
 }
 
 
@@ -97,7 +99,11 @@ bool q_insert_tail(queue_t *q, char *s)
 */
 bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
+    if (q == NULL || q->size == 0)
+        return false;
+
     /* You need to fix up this code. */
+    sp = strdup(q->head->value);
     q->head = q->head->next;
     /* remove one element, so the size should decrease */
     q->size--;
