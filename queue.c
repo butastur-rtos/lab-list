@@ -70,12 +70,17 @@ bool q_insert_head(queue_t *q, char *s)
     /* What if either call to malloc returns NULL? */
     if (newh != NULL) {
         newh->next = q->head;
-        q->head = newh;
         newh->value = strdup(s);
+
+        q->head = newh;
+        q->size++;
+
+        if (q->size == 1) {
+            q->tail = q->head;
+        }
     }
     return newh != NULL;
 }
-
 
 /*
   Attempt to insert element at tail of queue.
@@ -86,13 +91,26 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
+    if (q == NULL) {
+        return false;
+    }
     /* You need to write the complete code for this function */
     /* Remember: It should operate in O(1) time */
     /* newt means new tail */
     list_ele_t *newt;
     newt = malloc(sizeof(list_ele_t));
-    q->tail = newt;
-    return true;
+    if (newt != NULL) {
+        newt->next = NULL;
+        newt->value = strdup(s);
+
+        if (q->size == 0)
+            q->head = newt;
+        else
+            q->tail->next = newt;
+        q->tail = newt;
+        q->size++;
+    }
+    return newt != NULL;
 }
 
 /*
@@ -105,11 +123,10 @@ bool q_insert_tail(queue_t *q, char *s)
 */
 bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
-    if (q == NULL || q->size == 0)
+    if (q_size(q) == 0)
         return false;
 
     /* You need to fix up this code. */
-    sp = strdup(q->head->value);
     q->head = q->head->next;
     /* remove one element, so the size should decrease */
     q->size--;
