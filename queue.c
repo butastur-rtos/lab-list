@@ -41,8 +41,7 @@ void q_free(queue_t *q)
 {
     /* How about freeing the list elements and the strings? */
     /* Free queue structure */
-    list_ele_t *pos;
-    for (pos = q->head; pos != NULL;) {
+    for (list_ele_t *pos = q->head; pos != NULL;) {
         list_ele_t *prev = pos;
         pos = pos->next;
         free(prev);
@@ -127,7 +126,12 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
         return false;
 
     /* You need to fix up this code. */
+    list_ele_t *head = q->head;
     q->head = q->head->next;
+    if (q->head == NULL)
+        q->tail = NULL;
+
+    free(head);
     /* remove one element, so the size should decrease */
     q->size--;
     return true;
