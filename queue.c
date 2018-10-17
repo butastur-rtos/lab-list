@@ -11,8 +11,8 @@
  * It uses a singly-linked list to represent the set of queue elements
  */
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "harness.h"
@@ -104,6 +104,7 @@ bool q_insert_tail(queue_t *q, char *s)
     if (newt != NULL) {
         newt->next = NULL;
         newt->value = strdup(s);
+        newt->prev = q->tail;
 
         if (q->size == 0)
             q->head = newt;
@@ -164,7 +165,7 @@ int q_size(queue_t *q)
  */
 void q_reverse(queue_t *q)
 {
-    if (q != NULL && q->size) {
+    if (q != NULL && q->size > 1) {
         list_ele_t *prev, *current, *next;
         prev = q->head;
         current = q->head->next;
